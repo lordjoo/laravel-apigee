@@ -22,6 +22,33 @@ trait MakesHttpRequests
         return $response;
     }
 
+    public function post(string $url, array $data = [])
+    {
+        $response = $this->getHttpClient()->post($url, $data);
+        if ($response->failed()) {
+            $this->handleErrorResponse($response);
+        }
+        return $response;
+    }
+
+    public function put(string $url, array $data = [])
+    {
+        $response = $this->getHttpClient()->put($url, $data);
+        if ($response->failed()) {
+            $this->handleErrorResponse($response);
+        }
+        return $response;
+    }
+
+    public function delete(string $url)
+    {
+        $response = $this->getHttpClient()->delete($url);
+        if ($response->failed()) {
+            $this->handleErrorResponse($response);
+        }
+        return $response;
+    }
+
     private function handleErrorResponse(Response $response): void
     {
         $this->lastResponse = $response;

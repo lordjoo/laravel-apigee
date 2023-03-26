@@ -7,7 +7,10 @@ use Illuminate\Support\Facades\Facade;
 /**
  * @see \Lordjoo\Apigee\Apigee
  *
- * @method static \Lordjoo\Apigee\API\ApiProxy apiProxy()
+ * @method static \Lordjoo\Apigee\Services\ApiProxyService apiProxy()
+ * @method static \Lordjoo\Apigee\Services\ApiProductService apiProduct()
+ * @method static \Lordjoo\Apigee\Services\DeveloperService developer()
+ * @method static \Lordjoo\Apigee\Services\DeveloperAppService developerApps(string $developerEmailOrId)
  */
 class Apigee extends Facade
 {
