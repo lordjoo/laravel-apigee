@@ -1,11 +1,6 @@
-# This is my package laravel-apigee
+# Laravel Apigee API Client
+This package provides a Laravel-based API client for interacting with Apigee
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/lordjoo/laravel-apigee.svg?style=flat-square)](https://packagist.org/packages/lordjoo/laravel-apigee)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/lordjoo/laravel-apigee/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/lordjoo/laravel-apigee/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/lordjoo/laravel-apigee/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/lordjoo/laravel-apigee/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/lordjoo/laravel-apigee.svg?style=flat-square)](https://packagist.org/packages/lordjoo/laravel-apigee)
-
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
 
 ## Installation
 
@@ -15,24 +10,33 @@ You can install the package via composer:
 composer require lordjoo/laravel-apigee
 ```
 
+## Implemented Endpoints
 
-## Changelog
+### Edge API
 
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
-
-## Contributing
-
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
-
-## Security Vulnerabilities
-
-Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
-
-## Credits
-
-- [lordjoo](https://github.com/lordjoo)
-- [All Contributors](../../contributors)
-
-## License
-
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+* API Proxies
+  * [x] List API Proxies
+* API Products
+  * [x] List API Products
+  * [x] Create API Product
+  * [x] Update API Product
+  * [x] Delete API Product
+* Developers
+  * [x] List Developers
+  * [x] Get By Email or ID
+  * [x] Create Developer
+  * [x] Update Developer
+  * [x] Delete Developer
+  * Apps
+    * [x] List Apps
+    * [x] Get By ID
+    * [x] Create App
+    * [x] Update App
+    * [x] Delete App
+    * [x] Generate Key
+    * [x] Update Key
+    * [x] Delete Key
+  * [ ] Subscriptions
+* [ ] Companies
+* [ ] Monetization
+* [ ] Analytics
