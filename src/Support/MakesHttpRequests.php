@@ -2,9 +2,9 @@
 
 namespace Lordjoo\Apigee\Support;
 
+use Illuminate\Http\Client\Response;
 use Lordjoo\Apigee\Apigee;
 use Lordjoo\Apigee\Exceptions\ErrorHandlerInterface;
-use Illuminate\Http\Client\Response;
 
 /**
  * @mixin Apigee
@@ -19,6 +19,7 @@ trait MakesHttpRequests
         if ($response->failed()) {
             $this->handleErrorResponse($response);
         }
+
         return $response;
     }
 
@@ -28,6 +29,7 @@ trait MakesHttpRequests
         if ($response->failed()) {
             $this->handleErrorResponse($response);
         }
+
         return $response;
     }
 
@@ -37,6 +39,7 @@ trait MakesHttpRequests
         if ($response->failed()) {
             $this->handleErrorResponse($response);
         }
+
         return $response;
     }
 
@@ -46,6 +49,7 @@ trait MakesHttpRequests
         if ($response->failed()) {
             $this->handleErrorResponse($response);
         }
+
         return $response;
     }
 
@@ -54,5 +58,4 @@ trait MakesHttpRequests
         $this->lastResponse = $response;
         app(ErrorHandlerInterface::class)->handle($response);
     }
-
 }

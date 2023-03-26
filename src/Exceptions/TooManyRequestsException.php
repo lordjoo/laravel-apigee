@@ -1,11 +1,11 @@
 <?php
 
 namespace Lordjoo\Apigee\Exceptions;
+
 use Illuminate\Http\Client\Response;
 
 class TooManyRequestsException extends \Exception
 {
-
     public Response $response;
 
     public function __construct(Response $response, $message = null)

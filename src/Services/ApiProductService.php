@@ -9,14 +9,13 @@ class ApiProductService extends Service
 {
     /**
      * Returns a list of all API products in the organization.
-     *
-     * @return Collection
      */
     public function get(): Collection
     {
         $response = $this->client->get('apiproducts', [
-                'expand' => 'true',
-            ])->json();
+            'expand' => 'true',
+        ])->json();
+
         return collect($response['apiProduct'])->map(function ($product) {
             return new ApiProductResource($product);
         });
@@ -25,20 +24,23 @@ class ApiProductService extends Service
     public function find(string $name): ApiProductResource
     {
         $response = $this->client->get('apiproducts/'.$name, [
-                'expand' => 'true',
-            ])->json();
+            'expand' => 'true',
+        ])->json();
+
         return new ApiProductResource($response);
     }
 
     public function create(array $data): ApiProductResource
     {
         $response = $this->client->post('apiproducts', $data)->json();
+
         return new ApiProductResource($response);
     }
 
     public function update(string $name, array $data): ApiProductResource
     {
         $response = $this->client->put('apiproducts/'.$name, $data)->json();
+
         return new ApiProductResource($response);
     }
 
@@ -46,5 +48,4 @@ class ApiProductService extends Service
     {
         $this->client->delete('apiproducts/'.$name);
     }
-
 }
