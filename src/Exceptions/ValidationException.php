@@ -11,7 +11,7 @@ class ValidationException extends \Exception
         $this->errors = $errors;
 
         parent::__construct(
-            'Validation failed due to: ' . json_encode($this->errors)
+            'Validation failed due to: '.json_encode($this->errors)
         );
     }
 }

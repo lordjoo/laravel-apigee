@@ -18,11 +18,9 @@ class ApigeeServiceProvider extends PackageServiceProvider
 
     public function registeringPackage()
     {
-        $this->app->bind("apigee", fn () => Factory::FromConfig());
+        $this->app->bind('apigee', fn () => Factory::FromConfig());
         $this->app->singleton(Apigee::class, fn () => Factory::FromConfig());
         $this->app->alias(Apigee::class, 'apigee');
         $this->app->bind(ErrorHandlerInterface::class, Handler::class);
     }
-
-
 }

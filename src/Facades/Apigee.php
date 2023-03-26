@@ -16,7 +16,6 @@ class Apigee extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return "apigee";
+        return 'apigee';
     }
-
 }

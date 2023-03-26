@@ -4,7 +4,6 @@ namespace Lordjoo\Apigee;
 
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
-use Lordjoo\Apigee\API\ApiProxy;
 use Lordjoo\Apigee\Services\ApiProductService;
 use Lordjoo\Apigee\Services\ApiProxyService;
 use Lordjoo\Apigee\Services\DeveloperAppService;
@@ -16,15 +15,20 @@ class Apigee
     use MakesHttpRequests;
 
     protected ?PendingRequest $httpClient = null;
+
     protected string $username;
+
     protected string $password;
+
     protected string $endpoint;
+
     protected string $organization;
 
     private ApiProxyService $proxyService;
+
     private ApiProductService $productService;
 
-    public function __construct(string $endpoint, string $username,string $password, string $organization)
+    public function __construct(string $endpoint, string $username, string $password, string $organization)
     {
         $this->username = $username;
         $this->password = $password;
