@@ -34,10 +34,10 @@ class Apigee
         $this->password = $password;
         $this->endpoint = $endpoint;
         $this->organization = $organization;
-        $this->httpClient = $this->getHttpClient();
+        $this->httpClient = $this->httpClient();
     }
 
-    public function getHttpClient(): PendingRequest
+    public function httpClient(): PendingRequest
     {
         return $this->httpClient ??= Http::baseUrl($this->endpoint.'/organizations/'.$this->organization.'/')
             ->withBasicAuth($this->username, $this->password);

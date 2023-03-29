@@ -15,7 +15,7 @@ trait MakesHttpRequests
 
     public function get(string $url, array $query = [])
     {
-        $response = $this->getHttpClient()->get($url, $query);
+        $response = $this->httpClient()->get($url, $query);
         if ($response->failed()) {
             $this->handleErrorResponse($response);
         }
@@ -25,7 +25,7 @@ trait MakesHttpRequests
 
     public function post(string $url, array $data = [])
     {
-        $response = $this->getHttpClient()->post($url, $data);
+        $response = $this->httpClient()->post($url, $data);
         if ($response->failed()) {
             $this->handleErrorResponse($response);
         }
@@ -35,7 +35,7 @@ trait MakesHttpRequests
 
     public function put(string $url, array $data = [])
     {
-        $response = $this->getHttpClient()->put($url, $data);
+        $response = $this->httpClient()->put($url, $data);
         if ($response->failed()) {
             $this->handleErrorResponse($response);
         }
@@ -45,7 +45,7 @@ trait MakesHttpRequests
 
     public function delete(string $url)
     {
-        $response = $this->getHttpClient()->delete($url);
+        $response = $this->httpClient()->delete($url);
         if ($response->failed()) {
             $this->handleErrorResponse($response);
         }

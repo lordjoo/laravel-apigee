@@ -8,10 +8,6 @@ class Handler implements ErrorHandlerInterface
 {
     public function handle(Response $response)
     {
-        if ($response->successful()) {
-            return;
-        }
-
         if ($response->status() === 429) {
             throw new TooManyRequestsException($response);
         }
