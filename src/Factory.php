@@ -25,5 +25,4 @@ class Factory
             $driver->getOrganization()
         );
     }
-
 }

@@ -18,7 +18,7 @@ class ApigeeServiceProvider extends PackageServiceProvider
 
     public function packageRegistered()
     {
-        $driver = config("apigee.driver");
+        $driver = config('apigee.driver');
         $client = Factory::fromDriver(new $driver());
         $this->app->bind('apigee', fn () => $client);
         $this->app->singleton(Apigee::class, fn () => $client);
