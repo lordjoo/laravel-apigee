@@ -16,10 +16,12 @@ class ApigeeServiceProvider extends PackageServiceProvider
             ->hasConfigFile();
     }
 
-    public function registeringPackage()
+    public function packageRegistered()
     {
-        $this->app->bind('apigee', fn () => Factory::FromConfig());
-        $this->app->singleton(Apigee::class, fn () => Factory::FromConfig());
+        $driver = config("apigee.driver");
+        $client = Factory::fromDriver(new $driver());
+        $this->app->bind('apigee', fn () => $client);
+        $this->app->singleton(Apigee::class, fn () => $client);
         $this->app->alias(Apigee::class, 'apigee');
         $this->app->bind(ErrorHandlerInterface::class, Handler::class);
     }
