@@ -7,38 +7,46 @@ use Illuminate\Support\Facades\DB;
 
 class ConfigDBDriver implements ConfigReaderInterface
 {
+    private array $data;
+
+    public function __construct()
+    {
+        $this->setData();
+    }
+
     public function getQuery(): Builder
     {
         $table = config('apigee.db.table_name');
-
         return DB::table($table)->newQuery();
     }
 
+    public function setData(): void
+    {
+        $this->data = $this->getQuery()->first()->toArray();
+    }
+
+
     public function getOrganization(): string
     {
-        $column = config('apigee.db.columns.organization');
-
-        return $this->getQuery()->first()->$column;
+        $col = config('apigee.db.columns.organization');
+        return $this->data[$col];
     }
 
     public function getEndpoint(): string
     {
-        $column = config('apigee.db.columns.endpoint');
-
-        return $this->getQuery()->first()->$column;
+        $col = config('apigee.db.columns.endpoint');
+        return $this->data[$col];
     }
 
     public function getUserName(): string
     {
-        $column = config('apigee.db.columns.username');
-
-        return $this->getQuery()->first()->$column;
+        $col = config('apigee.db.columns.username');
+        return $this->data[$col];
     }
 
     public function getPassword(): string
     {
-        $column = config('apigee.db.columns.password');
-
-        return $this->getQuery()->first()->$column;
+        $col = config('apigee.db.columns.password');
+        return $this->data[$col];
     }
 }
