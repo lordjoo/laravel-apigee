@@ -10,8 +10,8 @@ class ApiProxyResource extends Resource
 
     public function __get($name)
     {
-        if (array_key_exists($name, $this->metadata)) {
-            return $this->metadata[$name];
+        if (array_key_exists($name, $this->metaData)) {
+            return $this->metaData[$name];
         }
         throw new \Exception("Property $name does not exist");
     }
