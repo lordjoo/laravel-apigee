@@ -2,7 +2,6 @@
 
 namespace Lordjoo\Apigee\Tests;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Lordjoo\Apigee\ApigeeServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
@@ -24,5 +23,4 @@ class TestCase extends Orchestra
     {
         config()->set('database.default', 'testing');
     }
-
 }
