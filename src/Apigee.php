@@ -25,7 +25,9 @@ class Apigee
     protected string $organization;
 
     protected ApiProxyService $proxyService;
+
     protected ApiProductService $productService;
+
     protected DeveloperService $developerService;
 
     public function __construct(string $endpoint, string $username, string $password, string $organization)
