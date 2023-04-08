@@ -69,5 +69,4 @@ class Apigee
     {
         return $this->get('environments')->json();
     }
-
 }
