@@ -60,8 +60,14 @@ class Apigee
         return $this->developerService ??= new DeveloperService($this);
     }
 
-    public function developerApps(string $developerEmailOrId)
+    public function developerApps(string $developerEmailOrId): DeveloperAppService
     {
         return new DeveloperAppService($this, $developerEmailOrId);
     }
+
+    public function listEnvironments(): array
+    {
+        return $this->get('environments')->json();
+    }
+
 }

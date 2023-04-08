@@ -73,4 +73,5 @@ $apps = Apigee::developerApps($developerIdOrEmail)->get();
 * [ ] Companies
 * [ ] Monetization
 * [ ] Analytics
+* [x] Environments
 

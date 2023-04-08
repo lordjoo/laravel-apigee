@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static \Lordjoo\Apigee\Services\ApiProductService apiProduct()
  * @method static \Lordjoo\Apigee\Services\DeveloperService developer()
  * @method static \Lordjoo\Apigee\Services\DeveloperAppService developerApps(string $developerEmailOrId)
+ * @method static array listEnvironments()
  */
 class Apigee extends Facade
 {
