@@ -4,10 +4,6 @@ namespace Lordjoo\Apigee;
 
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
-use Lordjoo\Apigee\Services\ApiProductService;
-use Lordjoo\Apigee\Services\ApiProxyService;
-use Lordjoo\Apigee\Services\DeveloperAppService;
-use Lordjoo\Apigee\Services\DeveloperService;
 use Lordjoo\Apigee\Support\MakesHttpRequests;
 
 class Apigee
@@ -15,20 +11,11 @@ class Apigee
     use MakesHttpRequests;
 
     protected ?PendingRequest $httpClient = null;
-
     protected string $username;
-
     protected string $password;
-
     protected string $endpoint;
-
     protected string $organization;
-
-    protected ApiProxyService $proxyService;
-
-    protected ApiProductService $productService;
-
-    protected DeveloperService $developerService;
+    protected bool $monetization = false;
 
     public function __construct(string $endpoint, string $username, string $password, string $organization)
     {
@@ -45,29 +32,38 @@ class Apigee
             ->withBasicAuth($this->username, $this->password);
     }
 
-    public function apiProxy(): ApiProxyService
+    public function apiProxy(): Services\ApiProxyService
     {
-        return $this->proxyService ??= new ApiProxyService($this);
+        return new Services\ApiProxyService($this);
     }
 
-    public function apiProduct(): ApiProductService
+    public function apiProduct(): Services\ApiProductService
     {
-        return $this->productService ??= new ApiProductService($this);
+        return new Services\ApiProductService($this);
     }
 
-    public function developer(): DeveloperService
+    public function developer(): Services\DeveloperService
     {
-        return $this->developerService ??= new DeveloperService($this);
+        return new Services\DeveloperService($this);
     }
 
-    public function developerApps(string $developerEmailOrId): DeveloperAppService
+    public function company(): Services\CompanyService
     {
-        return new DeveloperAppService($this, $developerEmailOrId);
+        return new Services\CompanyService($this);
     }
 
-    public function listEnvironments(): array
+    public function developerApp(string $developerEmail): Services\DeveloperAppService
     {
-        return $this->get('environments')->json();
+        return new Services\DeveloperAppService($this, $developerEmail);
     }
 
+    public function companyApp(string $companyName): Services\CompanyAppService
+    {
+        return new Services\CompanyAppService($this, $companyName);
+    }
+
+    public function monetization(): Monetization\Monetization
+    {
+        return new Monetization\Monetization($this->endpoint, $this->username, $this->password, $this->organization);
+    }
 }

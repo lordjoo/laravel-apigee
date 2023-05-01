@@ -3,12 +3,14 @@
 namespace Lordjoo\Apigee\Services;
 
 use Illuminate\Support\Collection;
-use Lordjoo\Apigee\Resources\ApiProductResource;
+use Lordjoo\Apigee\Entities\ApiProduct;
 
 class ApiProductService extends Service
 {
     /**
      * Returns a list of all API products in the organization.
+     *
+     * @return Collection<ApiProduct>
      */
     public function get(): Collection
     {
@@ -17,35 +19,62 @@ class ApiProductService extends Service
         ])->json();
 
         return collect($response['apiProduct'])->map(function ($product) {
-            return new ApiProductResource($product);
+            return new ApiProduct($product);
         });
     }
 
-    public function find(string $name): ApiProductResource
+    /**
+     * Find an API product by name.
+     *
+     * @param string $name
+     * @return ApiProduct
+     */
+    public function find(string $name): ApiProduct
     {
         $response = $this->client->get('apiproducts/'.$name, [
             'expand' => 'true',
         ])->json();
 
-        return new ApiProductResource($response);
+        return new ApiProduct($response);
     }
 
-    public function create(array $data): ApiProductResource
+    /**
+     * Create a new API product.
+     *
+     * @param array $data refer to https://apidocs.apigee.com/docs/api-products/1/types/APIProductRequest
+     * @return ApiProduct
+     */
+    public function create(array $data): ApiProduct
     {
         $response = $this->client->post('apiproducts', $data)->json();
-
-        return new ApiProductResource($response);
+        return new ApiProduct($response);
     }
 
-    public function update(string $name, array $data): ApiProductResource
+    /**
+     * Update an existing API product.
+     *
+     * @param string $name
+     * @param array $data refer to https://apidocs.apigee.com/docs/api-products/1/types/APIProductRequest
+     * @return ApiProduct
+     */
+    public function update(string $name, array $data): ApiProduct
     {
         $response = $this->client->put('apiproducts/'.$name, $data)->json();
-
-        return new ApiProductResource($response);
+        return new ApiProduct($response);
     }
 
+    /**
+     * Delete an API product.
+     *
+     * @param string $name
+     * @return void
+     */
     public function delete(string $name): void
     {
         $this->client->delete('apiproducts/'.$name);
     }
+
+
+
+
 }

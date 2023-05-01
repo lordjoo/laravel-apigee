@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\Facade;
  * @method static \Lordjoo\Apigee\Services\ApiProxyService apiProxy()
  * @method static \Lordjoo\Apigee\Services\ApiProductService apiProduct()
  * @method static \Lordjoo\Apigee\Services\DeveloperService developer()
- * @method static \Lordjoo\Apigee\Services\DeveloperAppService developerApps(string $developerEmailOrId)
- * @method static array listEnvironments()
+ * @method static \Lordjoo\Apigee\Services\DeveloperAppService developerApp(string $developerEmail)
+ * @method static \Lordjoo\Apigee\Services\CompanyService company()
  */
 class Apigee extends Facade
 {

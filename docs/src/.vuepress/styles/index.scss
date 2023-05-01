@@ -1,0 +1,13 @@
+:root {
+    // brand colors
+    --c-brand: #f44a02;
+    --c-brand-light: #f15d1d;
+
+    --content-width: 940px;
+    --homepage-width: 960px;
+}
+
+html.dark {
+    --c-brand: #f44a02;
+    --c-brand-light: #f15d1d;
+}

@@ -1,14 +1,13 @@
 <?php
 
-namespace Lordjoo\Apigee\Resources;
+namespace Lordjoo\Apigee\Entities;
 
-class ApiProxyResource extends Resource
+class ApiProxy extends Entity
 {
     public string $name;
-
     public array $metaData;
 
-    public function __get($name)
+    public function __get(string $name)
     {
         if (array_key_exists($name, $this->metaData)) {
             return $this->metaData[$name];

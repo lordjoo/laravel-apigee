@@ -3,12 +3,14 @@
 namespace Lordjoo\Apigee\Services;
 
 use Illuminate\Support\Collection;
-use Lordjoo\Apigee\Resources\ApiProxyResource;
+use Lordjoo\Apigee\Entities\ApiProxy;
 
 class ApiProxyService extends Service
 {
     /**
      * Returns a list of all API proxies in the organization.
+     *
+     * @return Collection<ApiProxy>
      */
     public function get(): Collection
     {
@@ -17,7 +19,8 @@ class ApiProxyService extends Service
         ])->json();
 
         return collect($response)->map(function ($proxy) {
-            return new ApiProxyResource($proxy);
+            return new ApiProxy($proxy);
         });
     }
+
 }

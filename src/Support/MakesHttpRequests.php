@@ -13,9 +13,11 @@ trait MakesHttpRequests
 {
     protected Response $lastResponse;
 
-    public function get(string $url, array $query = [])
+    public function get(string $url, array $query = [], array $headers = [])
     {
-        $response = $this->httpClient()->get($url, $query);
+        $response = $this->httpClient()
+            ->withHeaders($headers)
+            ->get($url, $query);
         if ($response->failed()) {
             $this->handleErrorResponse($response);
         }
@@ -23,9 +25,11 @@ trait MakesHttpRequests
         return $response;
     }
 
-    public function post(string $url, array $data = [])
+    public function post(string $url, array $data = [], array $headers = [])
     {
-        $response = $this->httpClient()->post($url, $data);
+        $response = $this->httpClient()
+            ->withHeaders($headers)
+            ->post($url, $data);
         if ($response->failed()) {
             $this->handleErrorResponse($response);
         }
@@ -33,9 +37,11 @@ trait MakesHttpRequests
         return $response;
     }
 
-    public function put(string $url, array $data = [])
+    public function put(string $url, array $data = [], array $headers = [])
     {
-        $response = $this->httpClient()->put($url, $data);
+        $response = $this->httpClient()
+            ->withHeaders($headers)
+            ->put($url, $data);
         if ($response->failed()) {
             $this->handleErrorResponse($response);
         }
@@ -43,15 +49,18 @@ trait MakesHttpRequests
         return $response;
     }
 
-    public function delete(string $url)
+    public function delete(string $url, array $data = [], array $headers = [])
     {
-        $response = $this->httpClient()->delete($url);
+        $response = $this->httpClient()
+            ->withHeaders($headers)
+            ->delete($url, $data);
         if ($response->failed()) {
             $this->handleErrorResponse($response);
         }
 
         return $response;
     }
+
 
     private function handleErrorResponse(Response $response): void
     {

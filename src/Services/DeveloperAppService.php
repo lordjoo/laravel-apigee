@@ -4,79 +4,88 @@ namespace Lordjoo\Apigee\Services;
 
 use Illuminate\Support\Collection;
 use Lordjoo\Apigee\Apigee;
-use Lordjoo\Apigee\Resources\CredentialResource;
-use Lordjoo\Apigee\Resources\DeveloperAppResource;
+use Lordjoo\Apigee\Entities\DeveloperApp;
 
 class DeveloperAppService extends Service
 {
-    protected string $developerId;
 
-    public function __construct(Apigee $client, string $developerEmailOrId)
+    protected string $developerEmail;
+
+    public function __construct(Apigee $client, string $developerEmail)
     {
         parent::__construct($client);
-        $this->developerId = $developerEmailOrId;
+        $this->developerEmail = $developerEmail;
     }
 
     /**
      * Returns a list of all Developer Apps in the organization.
+     * @return Collection<DeveloperApp>
      */
     public function get(): Collection
     {
-        $response = $this->client->get('developers/'.$this->developerId.'/apps', [
+        $response = $this->client->get('developers/'.$this->developerEmail.'/apps', [
             'expand' => 'true',
         ])->json();
 
         return collect($response['app'])->map(function ($app) {
-            return new DeveloperAppResource($app);
+            return new DeveloperApp($app);
         });
     }
 
-    public function find(string $appId): DeveloperAppResource
+    /**
+     * Creates a new Developer App in the organization.
+     *
+     * @param array $data refer to https://apidocs.apigee.com/docs/developer-apps/1/types/DeveloperAppRequest
+     * @return DeveloperApp
+     */
+    public function create(array $data): DeveloperApp
     {
-        $response = $this->client->get('developers/'.$this->developerId.'/apps/'.$appId)->json();
-
-        return new DeveloperAppResource($response);
+        $response = $this->client->post('developers/'.$this->developerEmail.'/apps', $data)->json();
+        return new DeveloperApp($response);
     }
 
-    public function create(array $data): DeveloperAppResource
+    /**
+     * Updates an existing Developer App in the organization.
+     *
+     * @param string $appName
+     * @param array $data refer to https://apidocs.apigee.com/docs/developer-apps/1/types/DeveloperAppRequest
+     * @return DeveloperApp
+     */
+    public function update(string $appName, array $data): DeveloperApp
     {
-        $response = $this->client->post('developers/'.$this->developerId.'/apps', $data)->json();
-
-        return new DeveloperAppResource($response);
+        $response = $this->client->put('developers/'.$this->developerEmail.'/apps/'.$appName, $data)->json();
+        return new DeveloperApp($response);
     }
 
-    public function update(string $appId, array $data): DeveloperAppResource
+    /**
+     * Deletes an existing Developer App in the organization.
+     *
+     * @param string $appName
+     * @return void
+     */
+    public function delete(string $appName): void
     {
-        $response = $this->client->put('developers/'.$this->developerId.'/apps/'.$appId, $data)->json();
-
-        return new DeveloperAppResource($response);
+        $this->client->delete('developers/'.$this->developerEmail.'/apps/'.$appName);
     }
 
-    public function createCredential(string $appId, array $data): DeveloperAppResource
+
+    /**
+     * Updates the status of an existing Developer App in the organization.
+     *
+     * @param string $appName
+     * @param string $status either 'approve' or 'revoke'
+     * @return void
+     */
+    public function updateStatus(string $appName, string $status): void
     {
-        $response = $this->client->post('developers/'.$this->developerId.'/apps/'.$appId.'/keys', $data)->json();
-
-        return $this->find($appId);
-    }
-
-    public function deleteCredential(string $appId, string $credentialId): DeveloperAppResource
-    {
-        $response = $this->client->delete('developers/'.$this->developerId.'/apps/'.$appId.'/keys/'.$credentialId)->json();
-
-        return $this->find($appId);
-    }
-
-    public function updateCredential(string $appId, string $credentialId, array $data): DeveloperAppResource
-    {
-        $response = $this->client->put('developers/'.$this->developerId.'/apps/'.$appId.'/keys/'.$credentialId, $data)->json();
-
-        return $this->find($appId);
-    }
-
-    public function getCredential(string $appName, string $consumerKey)
-    {
-        $response = $this->client->get('developers/'.$this->developerId.'/apps/'.$appName.'/keys/'.$consumerKey)->json();
-
-        return new CredentialResource($response + ['developerId' => $this->developerId, 'appName' => $appName]);
+        if (!in_array($status, ['approve', 'revoke'])) {
+            throw new \InvalidArgumentException('Invalid status provided.');
+        }
+        $this->client->post(
+            url:'developers/'.$this->developerEmail.'/apps/'.$appName.'/?action='.$status,
+            headers: [
+                'Content-Type' => 'application/octet-stream',
+            ]
+        );
     }
 }
