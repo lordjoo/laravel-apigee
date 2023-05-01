@@ -17,6 +17,14 @@ export default defineUserConfig({
                 link: '/guide/',
             },
             {
+                text: "Monetization",
+                link: "/monetization/"
+            },
+            {
+                text: 'API Reference',
+                link: 'https://apidocs.apigee.com/operations#quick-nav'
+            },
+            {
                 text: 'GitHub',
                 target: '_blank',
                 link: 'https://github.com'
