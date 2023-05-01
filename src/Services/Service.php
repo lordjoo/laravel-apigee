@@ -4,7 +4,7 @@ namespace Lordjoo\Apigee\Services;
 
 use Lordjoo\Apigee\Apigee;
 
-abstract class Service implements ServiceInterface
+abstract class Service
 {
     protected Apigee $client;
 
