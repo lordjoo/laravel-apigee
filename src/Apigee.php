@@ -11,10 +11,15 @@ class Apigee
     use MakesHttpRequests;
 
     protected ?PendingRequest $httpClient = null;
+
     protected string $username;
+
     protected string $password;
+
     protected string $endpoint;
+
     protected string $organization;
+
     protected bool $monetization = false;
 
     public function __construct(string $endpoint, string $username, string $password, string $organization)

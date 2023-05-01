@@ -34,31 +34,30 @@ class CompanyAppService extends Service
 
     /**
      * Create a new Company App
-     * @param array $data refer to https://apidocs.apigee.com/docs/company-apps/1/types/CompanyAppRequest
-     * @return CompanyApp
+     *
+     * @param  array  $data refer to https://apidocs.apigee.com/docs/company-apps/1/types/CompanyAppRequest
      */
     public function create(array $data): CompanyApp
     {
         $response = $this->client->post('companies/'.$this->companyName.'/apps', $data)->json();
+
         return new CompanyApp($response);
     }
 
     /**
      * Update a Company App
-     * @param string $appName
-     * @param array $data refer to https://apidocs.apigee.com/docs/company-apps/1/types/CompanyAppRequest
-     * @return CompanyApp
+     *
+     * @param  array  $data refer to https://apidocs.apigee.com/docs/company-apps/1/types/CompanyAppRequest
      */
     public function update(string $appName, array $data): CompanyApp
     {
         $response = $this->client->put('companies/'.$this->companyName.'/apps/'.$appName, $data)->json();
+
         return new CompanyApp($response);
     }
 
     /**
      * Delete a Company App
-     * @param string $appName
-     * @return void
      */
     public function delete(string $appName): void
     {
@@ -67,17 +66,16 @@ class CompanyAppService extends Service
 
     /**
      * Update the status of a Company App
-     * @param string $appName
-     * @param string $status either "approve" or "revoke"
-     * @return void
+     *
+     * @param  string  $status either "approve" or "revoke"
      */
     public function updateStatus(string $appName, string $status): void
     {
-        if (!in_array($status, ['approve', 'revoke'])) {
+        if (! in_array($status, ['approve', 'revoke'])) {
             throw new \InvalidArgumentException('Status must be either "approved" or "revoked"');
         }
         $this->client->post(
-            url:'companies/'.$this->companyName.'/apps/'.$appName.'?action='.$status,
+            url: 'companies/'.$this->companyName.'/apps/'.$appName.'?action='.$status,
             headers: [
                 'Content-Type' => 'application/octet-stream',
             ]

@@ -7,7 +7,6 @@ use Lordjoo\Apigee\Entities\Company;
 
 class CompanyService extends Service
 {
-
     /**
      * Get all companies in the organization.
      *
@@ -26,9 +25,6 @@ class CompanyService extends Service
 
     /**
      * Get a company by name.
-     *
-     * @param string $name
-     * @return Company
      */
     public function find(string $name): Company
     {
@@ -42,33 +38,29 @@ class CompanyService extends Service
     /**
      * Create a new company.
      *
-     * @param array $data refer to https://apidocs.apigee.com/docs/companies/1/types/CompanyRequest
-     * @return Company
+     * @param  array  $data refer to https://apidocs.apigee.com/docs/companies/1/types/CompanyRequest
      */
     public function create(array $data): Company
     {
         $response = $this->client->post('companies', $data)->json();
+
         return new Company($response);
     }
 
     /**
      * Update a company.
      *
-     * @param string $name
-     * @param array $data refer to https://apidocs.apigee.com/docs/companies/1/types/CompanyRequest
-     * @return Company
+     * @param  array  $data refer to https://apidocs.apigee.com/docs/companies/1/types/CompanyRequest
      */
     public function update(string $name, array $data): Company
     {
         $response = $this->client->put('companies/'.$name, $data)->json();
+
         return new Company($response);
     }
 
     /**
      * Delete a company.
-     *
-     * @param string $name
-     * @return void
      */
     public function delete(string $name): void
     {
@@ -78,21 +70,18 @@ class CompanyService extends Service
     /**
      * Update the status of a company.
      *
-     * @param string $name
-     * @param string $string
      * @return void
      */
     public function updateStatus(string $name, string $string)
     {
-        if (!in_array($string, ['active', 'inactive'])) {
+        if (! in_array($string, ['active', 'inactive'])) {
             throw new \Exception("Invalid status: {$string}");
         }
         $this->client->post(
-            url:'companies/'.$name.'?action='.$string,
+            url: 'companies/'.$name.'?action='.$string,
             headers: [
-                'Content-Type' => 'application/octet-stream'
+                'Content-Type' => 'application/octet-stream',
             ]
         );
     }
-
 }

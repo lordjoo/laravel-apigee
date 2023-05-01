@@ -7,7 +7,6 @@ use Lordjoo\Apigee\Apigee;
 
 abstract class Entity
 {
-
     protected Apigee $client;
 
     public function __construct(array $data)
@@ -20,6 +19,7 @@ abstract class Entity
                     foreach ($value as $attribute) {
                         $this->attributes[] = new Attribute($attribute);
                     }
+
                     continue;
                 }
                 if (is_numeric($value) && $value > 1000000000) {

@@ -6,9 +6,8 @@ use Lordjoo\Apigee\Entities\Attribute;
 
 trait AttributePropertyAware
 {
-
     /**
-     * @var Attribute[] $attributes
+     * @var Attribute[]
      */
     public array $attributes;
 

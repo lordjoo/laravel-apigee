@@ -22,5 +22,4 @@ class ApiProxyService extends Service
             return new ApiProxy($proxy);
         });
     }
-
 }

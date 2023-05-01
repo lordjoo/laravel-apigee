@@ -21,15 +21,14 @@ class Handler implements ErrorHandlerInterface
         }
 
         if ($response->status() === 400) {
-            throw new BadRequestException($response->json("message"));
+            throw new BadRequestException($response->json('message'));
         }
 
-        if ($response->json("message")) {
-            throw new \Exception($response->json("message"));
+        if ($response->json('message')) {
+            throw new \Exception($response->json('message'));
         }
 
         $response->throw();
-
 
     }
 }

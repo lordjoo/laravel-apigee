@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Http;
 
 class Monetization
 {
-
     use MakesHttpRequests;
 
     protected ?PendingRequest $httpClient = null;
@@ -18,13 +17,12 @@ class Monetization
         protected string $username,
         protected string $password,
         protected string $organization
-    ) {}
+    ) {
+    }
 
     public function httpClient(): PendingRequest
     {
         return $this->httpClient ??= Http::baseUrl($this->endpoint.'/mnt/organizations/'.$this->organization.'/')
             ->withBasicAuth($this->username, $this->password);
     }
-
-
 }
