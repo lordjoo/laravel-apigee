@@ -23,16 +23,18 @@ jobs:
 
       # install dependencies
       - name: Install dependencies
+        working-directory: docs
         run: npm install
 
       # run build script
       - name: Build VuePress site
+        working-directory: docs
         run: npm docs:build
 
       # please check out the docs of the workflow for more details
       # @see https://github.com/crazy-max/ghaction-github-pages
       - name: Deploy to GitHub Pages
-        uses: crazy-max/ghaction-github-pages@v2
+        working-directory: docs
         with:
           # deploy to gh-pages branch
           target_branch: gh-pages
