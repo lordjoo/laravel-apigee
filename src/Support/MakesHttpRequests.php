@@ -61,7 +61,6 @@ trait MakesHttpRequests
         return $response;
     }
 
-
     private function handleErrorResponse(Response $response): void
     {
         $this->lastResponse = $response;

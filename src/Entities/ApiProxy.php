@@ -5,6 +5,7 @@ namespace Lordjoo\Apigee\Entities;
 class ApiProxy extends Entity
 {
     public string $name;
+
     public array $metaData;
 
     public function __get(string $name)

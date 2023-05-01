@@ -25,9 +25,6 @@ class ApiProductService extends Service
 
     /**
      * Find an API product by name.
-     *
-     * @param string $name
-     * @return ApiProduct
      */
     public function find(string $name): ApiProduct
     {
@@ -41,40 +38,32 @@ class ApiProductService extends Service
     /**
      * Create a new API product.
      *
-     * @param array $data refer to https://apidocs.apigee.com/docs/api-products/1/types/APIProductRequest
-     * @return ApiProduct
+     * @param  array  $data refer to https://apidocs.apigee.com/docs/api-products/1/types/APIProductRequest
      */
     public function create(array $data): ApiProduct
     {
         $response = $this->client->post('apiproducts', $data)->json();
+
         return new ApiProduct($response);
     }
 
     /**
      * Update an existing API product.
      *
-     * @param string $name
-     * @param array $data refer to https://apidocs.apigee.com/docs/api-products/1/types/APIProductRequest
-     * @return ApiProduct
+     * @param  array  $data refer to https://apidocs.apigee.com/docs/api-products/1/types/APIProductRequest
      */
     public function update(string $name, array $data): ApiProduct
     {
         $response = $this->client->put('apiproducts/'.$name, $data)->json();
+
         return new ApiProduct($response);
     }
 
     /**
      * Delete an API product.
-     *
-     * @param string $name
-     * @return void
      */
     public function delete(string $name): void
     {
         $this->client->delete('apiproducts/'.$name);
     }
-
-
-
-
 }
