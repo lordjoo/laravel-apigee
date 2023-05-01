@@ -1,6 +1,8 @@
 name: Fix PHP code style issues
 
 on:
+  branch:
+    - master
   push:
     paths:
       - '**.php'
