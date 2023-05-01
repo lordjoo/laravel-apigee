@@ -3,6 +3,7 @@ import { searchPlugin } from '@vuepress/plugin-search'
 import sidebar from "./config/sidebar";
 
 export default defineUserConfig({
+    base:'/laravel-apigee/',
     lang: 'en-US',
     title: 'Laravel Apigee',
     description: 'A client to interact with Apigee API Management',
