@@ -2,9 +2,12 @@
 
 namespace Lordjoo\Apigee\Monetization;
 
-use Illuminate\Foundation\Testing\Concerns\MakesHttpRequests;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
+use Lordjoo\Apigee\Monetization\Services\ApiPackageService;
+use Lordjoo\Apigee\Monetization\Services\DeveloperService;
+use Lordjoo\Apigee\Monetization\Services\OrganizationService;
+use Lordjoo\Apigee\Support\MakesHttpRequests;
 
 class Monetization
 {
@@ -17,12 +20,27 @@ class Monetization
         protected string $username,
         protected string $password,
         protected string $organization
-    ) {
-    }
+    ) {}
 
     public function httpClient(): PendingRequest
     {
-        return $this->httpClient ??= Http::baseUrl($this->endpoint.'/mnt/organizations/'.$this->organization.'/')
+        return $this->httpClient ??= Http::baseUrl($this->endpoint.'/mint/organizations/'.$this->organization.'/')
             ->withBasicAuth($this->username, $this->password);
     }
+
+    public function organization(): OrganizationService
+    {
+        return new OrganizationService($this);
+    }
+
+    public function apiPackage(): ApiPackageService
+    {
+        return new ApiPackageService($this);
+    }
+
+    public function developer(): DeveloperService
+    {
+        return new DeveloperService($this);
+    }
+
 }

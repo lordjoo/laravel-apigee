@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Facade;
  * @method static \Lordjoo\Apigee\Services\DeveloperService developer()
  * @method static \Lordjoo\Apigee\Services\DeveloperAppService developerApp(string $developerEmail)
  * @method static \Lordjoo\Apigee\Services\CompanyService company()
+ * @method static \Lordjoo\Apigee\Services\CompanyAppService companyApp(string $companyName)
+ *
  */
 class Apigee extends Facade
 {

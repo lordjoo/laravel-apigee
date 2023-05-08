@@ -11,27 +11,16 @@ class Developer extends Entity
     use AttributePropertyAware;
 
     public string $firstName;
-
     public string $lastName;
-
     public string $userName;
-
     public string $email;
-
     public string $status;
-
     public array $companies;
-
     public string $developerId;
-
     public string $organizationName;
-
     public string $createdBy;
-
     public Carbon|string $createdAt;
-
     public string $lastModifiedBy;
-
     public Carbon|string $lastModifiedAt;
 
     /** Quick Actions  */
@@ -63,6 +52,18 @@ class Developer extends Entity
         $this->status = 'inactive';
         $this->client->developer()->updateStatus($this->email, 'inactive');
 
+        return $this;
+    }
+
+
+    /**
+     * Update developer
+     * @param array $data
+     * @return $this
+     */
+    public function update(array $data): self
+    {
+        $this->client->developer()->update($this->email, $data);
         return $this;
     }
 

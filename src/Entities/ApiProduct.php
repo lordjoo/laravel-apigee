@@ -29,4 +29,25 @@ class ApiProduct extends Entity
     public string $quotaInterval;
 
     public string $quotaTimeUnit;
+
+
+    /**
+     * Update the ApiProduct
+     * @param array $data
+     * @return self
+     */
+    public function update(array $data): self
+    {
+        return $this->client->apiProduct()->update($this->name, $data);
+    }
+
+    /**
+     * Delete the ApiProduct
+     * @return void
+     */
+    public function delete(): void
+    {
+        $this->client->apiProduct()->delete($this->name);
+    }
+
 }

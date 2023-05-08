@@ -1,0 +1,103 @@
+<?php
+
+namespace Lordjoo\Apigee\Monetization\Services;
+
+use Illuminate\Support\Collection;
+use Lordjoo\Apigee\Monetization\Entities\ApiPackage;
+use Lordjoo\Apigee\Monetization\Entities\RatePlan;
+
+class ApiPackageService extends Service
+{
+
+    /**
+     * Get all api packages
+     *
+     * @param integer $page
+     * @param integer $limit
+     * @return array ['packages' => Collection, 'totalPages' => int]
+     */
+    public function get(int $page = 1,int $limit = 20): array
+    {
+        $response = $this->client->get(
+            url:"monetization-packages?page=2",
+            query: [
+                'page' => $page,
+                'size' => $limit
+            ]
+        )->json();
+        $totalPages = intval($response['totalRecords'] / $limit);
+        $packages = collect($response['monetizationPackage'])->map(function ($item) {
+            return new ApiPackage($item);
+        });
+        return [
+            'packages' => $packages,
+            'totalPages' => $totalPages
+        ];
+    }
+
+
+    /**
+     * Find api package by id
+     * @param string $id
+     * @return ApiPackage
+     */
+    public function find(string $id): ApiPackage
+    {
+        $response = $this->client->get("monetization-packages/$id")->json();
+        return new ApiPackage($response);
+    }
+
+
+    /**
+     * Delete api package by id
+     * @param string $id
+     * @return void
+     */
+    public function delete(string $id): void
+    {
+        $this->client->delete("monetization-packages/$id");
+    }
+
+    /**
+     * Create new api package
+     *
+     * @param array $data
+     * @return ApiPackage
+     */
+    public function create(array $data): ApiPackage
+    {
+        $response = $this->client->post("monetization-packages", $data)->json();
+        return new ApiPackage($response);
+    }
+
+    /**
+     * Get all rate plans for a package
+     *
+     * @param string $package_id
+     * @param integer $page
+     * @param integer $limit
+     * @return array ['ratePlans' => Collection, 'totalPages' => int]
+     */
+    public function getRatePlans(
+        string $package_id,
+        int $page = 1,
+        int $limit = 20
+    ): Collection
+    {
+        $response = $this->client->get(
+            url:"monetization-packages/$package_id/rate-plans",
+            query: [
+                'page' => $page,
+                'size' => $limit
+            ]
+        )->json();
+        $plans = collect($response['ratePlan'])->map(function ($item) {
+            return new RatePlan($item);
+        });
+        return [
+            'ratePlans' => $plans,
+            'totalPages' => intval($response['totalRecords'] / $limit)
+        ];
+    }
+
+}

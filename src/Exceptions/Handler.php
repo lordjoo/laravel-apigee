@@ -17,7 +17,7 @@ class Handler implements ErrorHandlerInterface
         }
 
         if ($response->status() === 404) {
-            throw new NotFoundException();
+            throw new NotFoundException($response->json('message',null));
         }
 
         if ($response->status() === 400) {

@@ -1,17 +1,20 @@
 <?php
 
-namespace Lordjoo\Apigee\Entities;
+namespace Lordjoo\Apigee\Monetization\Entities;
 
 use Carbon\Carbon;
 use Lordjoo\Apigee\Apigee;
+use Lordjoo\Apigee\Entities\Attribute;
+use Lordjoo\Apigee\Monetization\Monetization;
 
 abstract class Entity
 {
-    protected Apigee $client;
+
+    protected Monetization $client;
 
     public function __construct(array $data)
     {
-        $this->client = app(Apigee::class);
+        $this->client = app(Apigee::class)->monetization();
         $this->setAttributes($data);
     }
 
@@ -29,6 +32,12 @@ abstract class Entity
                 }
                 if (is_numeric($value) && $value > 1000000000) {
                     $value = Carbon::createFromTimestamp($value / 1000);
+                }
+
+                $rp = new \ReflectionProperty($this, $key);
+                $type = $rp->getType()->getName();
+                if (class_exists($type)) {
+                    $value = new $type($value);
                 }
 
                 $this->{$key} = $value;

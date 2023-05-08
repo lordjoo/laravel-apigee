@@ -11,21 +11,13 @@ class Company extends Entity
     use AttributePropertyAware;
 
     public string $name;
-
     public string $displayName;
-
     public string $organization;
-
     public string $status;
-
     public array $apps;
-
     public string $createdBy;
-
     public Carbon|string $createdAt;
-
     public string $lastModifiedBy;
-
     public Carbon|string $lastModifiedAt;
 
     /** Quick Actions  */
@@ -63,6 +55,13 @@ class Company extends Entity
         $this->status = 'inactive';
         $this->client->company()->updateStatus($this->name, 'inactive');
 
+        return $this;
+    }
+
+
+    public function update(array $data) : self
+    {
+        $this->client->company()->update($this->name, $data);
         return $this;
     }
 

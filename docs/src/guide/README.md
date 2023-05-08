@@ -18,6 +18,8 @@ Publish the config file with:
 php artisan vendor:publish --provider="Lordjoo\Apigee\ApigeeServiceProvider"
 ```
 
+## Configuration
+
 Set the following environment variables in your `.env` file:
 ```dotenv
 APIGEE_ENDPOINT=
@@ -29,9 +31,9 @@ APIGEE_ORGANIZATION=
 At the moment, the package only supports Basic Authentication.
 :::
 
-**You're all set! head over to the [Usage](/docs/usage) page to learn how to use the package.**
 
-##x How to use
+## How to use
+
 Laravel Apigee create singleton instance of Apigee class, so you can use it anywhere in your application.
 
 ```php

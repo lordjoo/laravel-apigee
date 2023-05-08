@@ -8,6 +8,7 @@ export default {
                     text: 'Entities',
                     link: '/guide/entities/README.md',
                     children: [
+                        '/guide/entities/attribute.md',
                         '/guide/entities/api-proxy.md',
                         '/guide/entities/api-product.md',
                         '/guide/entities/developer.md',
