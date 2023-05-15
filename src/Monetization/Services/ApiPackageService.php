@@ -100,4 +100,42 @@ class ApiPackageService extends Service
         ];
     }
 
+    public function createRatePlan(
+        string $package_id,
+        array $data
+    ): RatePlan
+    {
+        $response = $this->client->post(
+            url:"monetization-packages/$package_id/rate-plans",
+            data: $data
+        )->json();
+        return new RatePlan($response);
+    }
+
+
+    // TODO: produce a response w content to return an Entity classes
+    public function addApiProduct(
+        string $package_id,
+        string $product_id,
+        array $rate_plans = []
+    ) {
+        return $this->client->post(
+            url:"monetization-packages/$package_id/products/$product_id",
+            data: [
+                "ratePlan" => $rate_plans
+            ]
+        )->json();
+    }
+
+
+    public function removeApiProduct(
+        string $package_id,
+        string $product_id
+    ) {
+        return $this->client->delete(
+            url:"monetization-packages/$package_id/products/$product_id"
+        )->json();
+    }
+
+
 }

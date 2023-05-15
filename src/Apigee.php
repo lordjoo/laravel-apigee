@@ -37,6 +37,11 @@ class Apigee
             ->withBasicAuth($this->username, $this->password);
     }
 
+    public function environments()
+    {
+        return $this->httpClient->get('environments')->json();
+    }
+
     public function apiProxy(): Services\ApiProxyService
     {
         return new Services\ApiProxyService($this);
