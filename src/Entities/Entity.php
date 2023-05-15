@@ -36,4 +36,17 @@ abstract class Entity
         }
     }
 
+    public function toArray(): array
+    {
+        $data = [];
+        foreach ($this as $key => $value) {
+            if ($value instanceof Entity) {
+                $data[$key] = $value->toArray();
+                continue;
+            }
+            $data[$key] = $value;
+        }
+        return $data;
+    }
+
 }
