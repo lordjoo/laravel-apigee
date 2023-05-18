@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Facade;
 /**
  * @see \Lordjoo\Apigee\Apigee
  *
- * @method static \Lordjoo\Apigee\Apigee environments()
+ * @method static array environments()
  * @method static \Lordjoo\Apigee\Services\ApiProxyService apiProxy()
  * @method static \Lordjoo\Apigee\Services\ApiProductService apiProduct()
  * @method static \Lordjoo\Apigee\Services\DeveloperService developer()

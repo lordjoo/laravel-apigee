@@ -3,6 +3,7 @@
 namespace Lordjoo\Apigee\Entities;
 
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Lordjoo\Apigee\Apigee;
 
 abstract class Entity
@@ -36,15 +37,26 @@ abstract class Entity
         }
     }
 
-    public function toArray(): array
+    public function toArray(bool $sneakCase = false,): array
     {
         $data = [];
         foreach ($this as $key => $value) {
-            if ($value instanceof Entity) {
-                $data[$key] = $value->toArray();
+            if ($sneakCase) {
+                $_key = Str::snake($key);
+            } else {
+                $_key = $key;
+            }
+
+            $rf = new \ReflectionProperty($this, $key);
+            if ($rf->isPrivate() || $rf->isProtected()) {
                 continue;
             }
-            $data[$key] = $value;
+
+            if ($value instanceof Entity) {
+                $data[$_key] = $value->toArray();
+                continue;
+            }
+            $data[$_key] = $value;
         }
         return $data;
     }
