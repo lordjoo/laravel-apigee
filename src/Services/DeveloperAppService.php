@@ -33,6 +33,18 @@ class DeveloperAppService extends Service
     }
 
     /**
+     * Returns a Developer App in the organization.
+     */
+    public function find(string $appName): DeveloperApp
+    {
+        $response = $this->client->get('developers/'.$this->developerEmail.'/apps/'.$appName, [
+            'expand' => 'true',
+        ])->json();
+
+        return new DeveloperApp($response);
+    }
+
+    /**
      * Creates a new Developer App in the organization.
      *
      * @param  array  $data refer to https://apidocs.apigee.com/docs/developer-apps/1/types/DeveloperAppRequest

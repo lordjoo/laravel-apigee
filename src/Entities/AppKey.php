@@ -23,7 +23,7 @@ class AppKey extends Entity
 
     public array $scopes;
 
-    public string $apiProducts;
+    public array $apiProducts;
 
     public Carbon|string $expiresAt;
 

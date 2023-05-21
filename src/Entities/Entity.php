@@ -51,6 +51,16 @@ abstract class Entity
             if ($rf->isPrivate() || $rf->isProtected()) {
                 continue;
             }
+            // if the value is an array of entities then convert them to array
+            if (is_array($value)) {
+                foreach ($value as $k => $v) {
+                    if ($v instanceof Entity) {
+                        $value[$k] = $v->toArray();
+                    }
+                }
+                $data[$_key] = $value;
+                continue;
+            }
 
             if ($value instanceof Entity) {
                 $data[$_key] = $value->toArray();

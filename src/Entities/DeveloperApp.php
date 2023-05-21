@@ -17,7 +17,9 @@ class DeveloperApp extends Entity
     public function __construct(array $data)
     {
         parent::__construct($data);
-        foreach ($this->credentials as $credential) {
+        $credentials = $this->credentials;
+        $this->credentials = [];
+        foreach ($credentials as $credential) {
             $credential['developerId'] = $this->developerId;
             $credential['appName'] = $this->name;
             $this->credentials[] = new AppKey($credential);
