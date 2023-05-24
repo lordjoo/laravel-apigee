@@ -1,0 +1,1 @@
+const t=JSON.parse('{"key":"v-3fa667ad","path":"/monetization/","title":"Monetization","lang":"en-US","frontmatter":{},"headers":[],"git":{"updatedTime":1682977883000,"contributors":[{"name":"lordjoo","email":"youssef.afify122@gmail.com","commits":1}]},"filePathRelative":"monetization/README.md"}');export{t as data};
