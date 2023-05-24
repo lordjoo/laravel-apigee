@@ -3,7 +3,9 @@
 namespace Lordjoo\Apigee\Services;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Validator;
 use Lordjoo\Apigee\Entities\Developer;
+use Lordjoo\Apigee\Exceptions\ValidationException;
 
 class DeveloperService extends Service
 {
@@ -37,10 +39,12 @@ class DeveloperService extends Service
     /**
      * Creates a new developer in the organization.
      *
-     * @param  array  $data refer to https://apidocs.apigee.com/docs/developers/1/types/DeveloperRequest
+     * @param array $data refer to https://apidocs.apigee.com/docs/developers/1/types/DeveloperRequest
+     * @throws ValidationException
      */
     public function create(array $data): Developer
     {
+        $this->validateData($data);
         $response = $this->client->post('developers', $data)->json();
 
         return new Developer($response);
@@ -49,10 +53,12 @@ class DeveloperService extends Service
     /**
      * Updates an existing developer in the organization.
      *
-     * @param  array  $data refer to https://apidocs.apigee.com/docs/developers/1/types/DeveloperRequest
+     * @param array $data refer to https://apidocs.apigee.com/docs/developers/1/types/DeveloperRequest
+     * @throws ValidationException
      */
     public function update(string $email, array $data): Developer
     {
+        $this->validateData($data);
         $response = $this->client->put("developers/{$email}", $data)->json();
 
         return new Developer($response);
@@ -77,5 +83,23 @@ class DeveloperService extends Service
             throw new \InvalidArgumentException('Invalid status');
         }
         $this->client->post("developers/{$email}?action={$status}");
+    }
+
+
+    protected function validateData(array $data): void
+    {
+        $validator = Validator::make($data, [
+            'email' => 'required|email',
+            'firstName' => 'required',
+            'lastName' => 'required',
+            'userName' => 'required',
+            'attributes' => 'nullable|array',
+            'attributes.*.name' => 'required|string',
+            'attributes.*.value' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator->errors()->first());
+        }
     }
 }

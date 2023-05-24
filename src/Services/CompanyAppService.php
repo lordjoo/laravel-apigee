@@ -5,6 +5,7 @@ namespace Lordjoo\Apigee\Services;
 use Illuminate\Support\Collection;
 use Lordjoo\Apigee\Apigee;
 use Lordjoo\Apigee\Entities\CompanyApp;
+use Lordjoo\Apigee\Exceptions\ValidationException;
 
 class CompanyAppService extends Service
 {
@@ -80,5 +81,25 @@ class CompanyAppService extends Service
                 'Content-Type' => 'application/octet-stream',
             ]
         );
+    }
+
+    protected function validateData(array $data)
+    {
+        $validator = Validator::make($data, [
+            'name' => 'required|string',
+            'apiProducts' => 'required|array',
+            'apiProducts.*' => 'string|required',
+            'attributes' => 'nullable|array',
+            'attributes.*.name' => 'required|string',
+            'attributes.*.value' => 'required|string',
+            'callbackUrl' => 'nullable|url',
+            'keyExpiresIn' => 'nullable|integer',
+            'scopes' => 'nullable|array',
+            'status' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator->errors()->first());
+        }
     }
 }

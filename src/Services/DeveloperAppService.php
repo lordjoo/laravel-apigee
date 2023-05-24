@@ -3,8 +3,11 @@
 namespace Lordjoo\Apigee\Services;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Validator;
 use Lordjoo\Apigee\Apigee;
+use Lordjoo\Apigee\Entities\AppKey;
 use Lordjoo\Apigee\Entities\DeveloperApp;
+use Lordjoo\Apigee\Exceptions\ValidationException;
 
 class DeveloperAppService extends Service
 {
@@ -93,4 +96,86 @@ class DeveloperAppService extends Service
             ]
         );
     }
+
+    /**
+     * @throws ValidationException
+     */
+    public function createCredential(string $appId, array $data): DeveloperApp
+    {
+        $this->validateCreateCredentialRequestdata($data);
+        $response = $this->client->post('developers/'.$this->developerEmail.'/apps/'.$appId.'/keys', $data)->json();
+
+        return $this->find($appId);
+    }
+
+    public function addProductToCredential(string $appId, string $credentialId, string $productName): DeveloperApp
+    {
+        $response = $this->client->post('developers/'.$this->developerEmail.'/apps/'.$appId.'/keys/'.$credentialId.'/apiproducts/'.$productName)->json();
+
+        return $this->find($appId);
+    }
+
+    public function removeProductFromCredential(string $appId, string $credentialId, string $productName): DeveloperApp
+    {
+        $response = $this->client->delete('developers/'.$this->developerEmail.'/apps/'.$appId.'/keys/'.$credentialId.'/apiproducts/'.$productName)->json();
+
+        return $this->find($appId);
+    }
+
+    public function updateCredential(string $appId, string $credentialId, array $data): DeveloperApp
+    {
+        $response = $this->client->put('developers/'.$this->developerEmail.'/apps/'.$appId.'/keys/'.$credentialId, $data)->json();
+
+        return $this->find($appId);
+    }
+
+    public function deleteCredential(string $appId, string $credentialId): DeveloperApp
+    {
+        $response = $this->client->delete('developers/'.$this->developerEmail.'/apps/'.$appId.'/keys/'.$credentialId)->json();
+
+        return $this->find($appId);
+    }
+
+    public function getCredential(string $appName, string $consumerKey): AppKey
+    {
+        $response = $this->client->get('developers/'.$this->developerEmail.'/apps/'.$appName.'/keys/'.$consumerKey)->json();
+
+        return new AppKey($response + ['developerId' => $this->developerEmail, 'appName' => $appName]);
+    }
+
+    protected function validateData(array $data): void
+    {
+        $validator = Validator::make($data, [
+            'name' => 'required|string',
+            'apiProducts' => 'required|array',
+            'apiProducts.*' => 'string|required',
+            'attributes' => 'nullable|array',
+            'attributes.*.name' => 'required|string',
+            'attributes.*.value' => 'required|string',
+            'callbackUrl' => 'nullable|url',
+            'keyExpiresIn' => 'nullable|integer',
+            'scopes' => 'nullable|array',
+        ]);
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator->errors()->first());
+        }
+
+    }
+
+
+    protected function validateCreateCredentialRequestdata(array $data): void
+    {
+        $validator = Validator::make($data, [
+            'consumerKey' => 'required|string',
+            'consumerSecret' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator->errors()->first());
+        }
+
+    }
+
+
 }

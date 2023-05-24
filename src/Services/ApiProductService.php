@@ -3,7 +3,9 @@
 namespace Lordjoo\Apigee\Services;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Validator;
 use Lordjoo\Apigee\Entities\ApiProduct;
+use Lordjoo\Apigee\Exceptions\ValidationException;
 
 class ApiProductService extends Service
 {
@@ -38,10 +40,12 @@ class ApiProductService extends Service
     /**
      * Create a new API product.
      *
-     * @param  array  $data refer to https://apidocs.apigee.com/docs/api-products/1/types/APIProductRequest
+     * @param array $data refer to https://apidocs.apigee.com/docs/api-products/1/types/APIProductRequest
+     * @throws ValidationException
      */
     public function create(array $data): ApiProduct
     {
+        $this->validateData($data);
         $response = $this->client->post('apiproducts', $data)->json();
 
         return new ApiProduct($response);
@@ -50,10 +54,12 @@ class ApiProductService extends Service
     /**
      * Update an existing API product.
      *
-     * @param  array  $data refer to https://apidocs.apigee.com/docs/api-products/1/types/APIProductRequest
+     * @param array $data refer to https://apidocs.apigee.com/docs/api-products/1/types/APIProductRequest
+     * @throws ValidationException
      */
     public function update(string $name, array $data): ApiProduct
     {
+        $this->validateData($data);
         $response = $this->client->put('apiproducts/'.$name, $data)->json();
 
         return new ApiProduct($response);
@@ -65,5 +71,34 @@ class ApiProductService extends Service
     public function delete(string $name): void
     {
         $this->client->delete('apiproducts/'.$name);
+    }
+
+
+    protected function validateData(array $data): void
+    {
+        $validator = Validator::make($data,[
+            'name' => 'required|string',
+            'displayName' => 'required|string',
+            'approvalType' => 'required|in:auto,manual',
+            'apiResources' => 'nullable|array',
+            'apiResources.*' => 'required|string',
+            'attributes' => 'nullable|array',
+            'attributes.*.name' => 'required|string',
+            'attributes.*.value' => 'required|string',
+            'description' => 'nullable|string',
+            'environments' => 'nullable|array',
+            'proxies' => 'nullable|array',
+            'proxies.*' => 'required|string',
+            'quota' => 'nullable|integer',
+            'quotaInterval' => 'nullable|integer',
+            'quotaTimeUnit' => 'nullable|in:minute,hour,day,month',
+            'scopes' => 'nullable|array',
+            'scopes.*' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator->errors()->toArray());
+        }
+
     }
 }

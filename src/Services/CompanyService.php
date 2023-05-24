@@ -3,7 +3,9 @@
 namespace Lordjoo\Apigee\Services;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Validator;
 use Lordjoo\Apigee\Entities\Company;
+use Lordjoo\Apigee\Exceptions\ValidationException;
 
 class CompanyService extends Service
 {
@@ -38,10 +40,12 @@ class CompanyService extends Service
     /**
      * Create a new company.
      *
-     * @param  array  $data refer to https://apidocs.apigee.com/docs/companies/1/types/CompanyRequest
+     * @param array $data refer to https://apidocs.apigee.com/docs/companies/1/types/CompanyRequest
+     * @throws ValidationException
      */
     public function create(array $data): Company
     {
+        $this->validateData($data);
         $response = $this->client->post('companies', $data)->json();
 
         return new Company($response);
@@ -50,10 +54,12 @@ class CompanyService extends Service
     /**
      * Update a company.
      *
-     * @param  array  $data refer to https://apidocs.apigee.com/docs/companies/1/types/CompanyRequest
+     * @param array $data refer to https://apidocs.apigee.com/docs/companies/1/types/CompanyRequest
+     * @throws ValidationException
      */
     public function update(string $name, array $data): Company
     {
+        $this->validateData($data);
         $response = $this->client->put('companies/'.$name, $data)->json();
 
         return new Company($response);
@@ -83,5 +89,20 @@ class CompanyService extends Service
                 'Content-Type' => 'application/octet-stream',
             ]
         );
+    }
+
+    protected function validateData(array $data): void
+    {
+        $validator = Validator::make($data, [
+            'name' => 'required|string',
+            'displayName' => 'required|string',
+            'attributes' => 'nullable|array',
+            'attributes.*.name' => 'required|string',
+            'attributes.*.value' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator->errors()->first());
+        }
     }
 }
